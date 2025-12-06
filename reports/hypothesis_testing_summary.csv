@@ -1,0 +1,4 @@
+Hypothesis,Metric,Test,P-value,Result,Business Implication
+Risk differences across provinces,Loss Ratio,ANOVA,0.229818,FAIL TO REJECT,No significant regional risk differences
+Margin differences between zip codes,Profit Margin,Mann-Whitney U,0.011107,REJECT NULL,Target profitable zip codes for marketing
+Risk differences between Women and Men,Multiple metrics,Multiple tests,"Claim Frequency: 0.0065, Claim Severity: 0.6526, Loss Ratio: 0.0070",MIXED RESULTS,Gender shows some but not consistent risk differences
