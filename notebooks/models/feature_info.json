@@ -1,0 +1,50 @@
+{
+  "features": [
+    "Gender",
+    "DriverAge",
+    "RiskScore",
+    "NumberOfDependents",
+    "smoker",
+    "Province",
+    "PostalCode",
+    "VehicleType",
+    "Make",
+    "Model",
+    "VehicleAge",
+    "SumInsured",
+    "TotalPremium",
+    "PremiumPerInsured",
+    "RiskFactor",
+    "Age_VehicleAge_Interaction",
+    "Premium_Insured_Ratio",
+    "ClaimRatio"
+  ],
+  "categorical_features": [
+    "Gender",
+    "smoker",
+    "Province",
+    "VehicleType",
+    "Make",
+    "Model"
+  ],
+  "numerical_features": [
+    "DriverAge",
+    "RiskScore",
+    "NumberOfDependents",
+    "PostalCode",
+    "VehicleAge",
+    "SumInsured",
+    "TotalPremium",
+    "PremiumPerInsured",
+    "RiskFactor",
+    "Age_VehicleAge_Interaction",
+    "Premium_Insured_Ratio",
+    "ClaimRatio"
+  ],
+  "targets": {
+    "claim_amount": "TotalClaims",
+    "premium": "TotalPremium",
+    "claim_flag": "HasClaim",
+    "loss_ratio": "LossRatio"
+  }
+}
