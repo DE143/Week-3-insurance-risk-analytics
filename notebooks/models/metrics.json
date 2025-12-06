@@ -1,0 +1,80 @@
+{
+  "metadata": {
+    "created_date": "2025-12-06T10:53:01.559654",
+    "dataset_size": 1338,
+    "claim_frequency": 0.20478325859491778,
+    "average_premium": 13270.422265141257,
+    "average_claim": 3955.7969222616694
+  },
+  "model_comparisons": {
+    "claim_severity": [
+      {
+        "Model": "Linear Regression",
+        "RMSE": 6021.38204876148,
+        "R2": 0.852869815973393,
+        "MAE": 4237.650512528966
+      },
+      {
+        "Model": "Random Forest",
+        "RMSE": 3259.319524663484,
+        "R2": 0.956891462653592,
+        "MAE": 2174.240288961508
+      },
+      {
+        "Model": "XGBoost",
+        "RMSE": 3556.3533350477815,
+        "R2": 0.9486761511669374,
+        "MAE": 2404.243420646611
+      },
+      {
+        "Model": "LightGBM",
+        "RMSE": 3211.0528012832356,
+        "R2": 0.9581587832723494,
+        "MAE": 1979.0175566257622
+      }
+    ],
+    "claim_probability": [
+      {
+        "Model": "Logistic Regression",
+        "ROC_AUC": 1.0,
+        "Accuracy": 1.0,
+        "F1": 1.0
+      },
+      {
+        "Model": "Random Forest",
+        "ROC_AUC": 1.0,
+        "Accuracy": 1.0,
+        "F1": 1.0
+      },
+      {
+        "Model": "XGBoost",
+        "ROC_AUC": 1.0,
+        "Accuracy": 1.0,
+        "F1": 1.0
+      },
+      {
+        "Model": "LightGBM",
+        "ROC_AUC": 1.0,
+        "Accuracy": 1.0,
+        "F1": 1.0
+      }
+    ],
+    "premium_optimization": [
+      {
+        "Model": "XGBoost",
+        "RMSE": 2445.5486988642892,
+        "R2": 0.9940231243211406
+      },
+      {
+        "Model": "LightGBM",
+        "RMSE": 2677.30704570003,
+        "R2": 0.9928366206057047
+      },
+      {
+        "Model": "Random Forest",
+        "RMSE": 2549.9105532046965,
+        "R2": 0.9935021230300727
+      }
+    ]
+  }
+}
