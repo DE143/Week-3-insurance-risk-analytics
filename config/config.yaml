@@ -1,0 +1,456 @@
+# Insurance Risk Analytics Configuration
+# Version: 1.0.0
+
+# Data Configuration
+data:
+  # Paths
+  raw_path: "data/raw/insurance.csv"
+  processed_path: "data/processed/insurance_processed.csv"
+  
+  # Processing parameters
+  test_size: 0.2
+  random_state: 42
+  validation_split: 0.1
+  
+  # Feature engineering
+  create_risk_score: true
+  create_interaction_features: true
+  clip_loss_ratio: true
+  loss_ratio_clip_max: 2.0
+  
+  # Data quality
+  min_samples_per_zipcode: 5
+  min_claim_samples: 10
+
+# Feature Configuration
+features:
+  # Feature categories
+  client_features:
+    - "Gender"
+    - "DriverAge"
+    - "RiskScore"
+    - "NumberOfDependents"
+    - "smoker"
+  
+  geographic_features:
+    - "Province"
+    - "PostalCode"
+  
+  vehicle_features:
+    - "VehicleType"
+    - "Make"
+    - "Model"
+    - "VehicleAge"
+  
+  insurance_features:
+    - "SumInsured"
+    - "TotalPremium"
+    - "PremiumPerInsured"
+  
+  engineered_features:
+    - "RiskFactor"
+    - "Age_VehicleAge_Interaction"
+    - "ClaimRatio"
+    - "Margin"
+  
+  # Target variables
+  target_claim: "TotalClaims"
+  target_premium: "TotalPremium"
+  target_claim_flag: "HasClaim"
+  target_loss_ratio: "LossRatio"
+
+# Hypothesis Testing Configuration
+hypothesis_testing:
+  # Significance level
+  alpha: 0.05
+  
+  # Test configurations
+  province_test:
+    min_provinces: 2
+    min_samples_per_province: 10
+  
+  zipcode_test:
+    min_zipcodes: 4
+    min_samples_per_zipcode: 5
+    top_n_zipcodes: 10
+  
+  gender_test:
+    # Gender column mappings
+    gender_columns: ["Gender", "sex", "gender"]
+    valid_gender_values: ["male", "female", "m", "f"]
+  
+  # Output configuration
+  save_results: true
+  create_visualizations: true
+  output_dir: "reports"
+
+# Machine Learning Configuration
+machine_learning:
+  # General parameters
+  random_state: 42
+  test_size: 0.2
+  cv_folds: 5
+  n_jobs: -1
+  
+  # Claim Severity Models
+  claim_severity:
+    min_samples: 20
+    models:
+      linear_regression:
+        enabled: true
+        
+      random_forest:
+        enabled: true
+        n_estimators: 100
+        max_depth: 10
+        min_samples_split: 5
+        
+      xgboost:
+        enabled: true
+        n_estimators: 100
+        max_depth: 5
+        learning_rate: 0.1
+        
+      lightgbm:
+        enabled: true
+        n_estimators: 100
+        max_depth: 5
+        learning_rate: 0.1
+  
+  # Claim Probability Models
+  claim_probability:
+    min_positive_samples: 10
+    use_class_weights: true
+    models:
+      logistic_regression:
+        enabled: true
+        max_iter: 1000
+        class_weight: "balanced"
+        
+      random_forest:
+        enabled: true
+        n_estimators: 100
+        max_depth: 10
+        class_weight: "balanced"
+        
+      xgboost:
+        enabled: true
+        n_estimators: 100
+        max_depth: 5
+        scale_pos_weight: "auto"
+        
+      lightgbm:
+        enabled: true
+        n_estimators: 100
+        max_depth: 5
+        class_weight: "balanced"
+  
+  # Premium Optimization Models
+  premium_optimization:
+    risk_factor_enabled: true
+    models:
+      xgboost:
+        enabled: true
+        n_estimators: 150
+        max_depth: 5
+        
+      lightgbm:
+        enabled: true
+        n_estimators: 150
+        max_depth: 5
+        
+      random_forest:
+        enabled: true
+        n_estimators: 150
+        max_depth: 10
+  
+  # SHAP Analysis
+  shap_analysis:
+    enabled: true
+    sample_size: 100
+    max_display_features: 15
+  
+  # Model Saving
+  save_models: true
+  model_dir: "models"
+  save_metrics: true
+
+# Business Configuration
+business:
+  # Pricing parameters
+  expense_loading: 0.15  # 15% for operational expenses
+  profit_margin: 0.10    # 10% target profit margin
+  risk_adjustment_range: 0.30  # ±30% adjustment based on risk
+  
+  # Risk factors
+  risk_weights:
+    smoker: 0.3
+    age_over_60: 0.2
+    vehicle_over_10_years: 0.2
+    bmi_over_30: 0.1
+    dependents_over_2: 0.1
+    premium_over_75th_percentile: 0.1
+  
+  # Marketing thresholds
+  low_risk_threshold: 0.3
+  high_risk_threshold: 0.7
+  profitability_threshold: 0.05  # 5% minimum profit margin
+  
+  # Implementation timeline
+  implementation_phases:
+    phase1_months: 2
+    phase2_months: 4
+    phase3_months: 6
+
+# Visualization Configuration
+visualization:
+  # Style settings
+  style: "seaborn-v0_8-darkgrid"
+  palette: "husl"
+  figure_dpi: 300
+  
+  # Plot sizes
+  figure_sizes:
+    small: [8, 6]
+    medium: [12, 8]
+    large: [16, 12]
+    dashboard: [20, 15]
+  
+  # Output settings
+  output_dir: "reports/figures"
+  save_formats: ["png", "html"]
+  interactive_dashboard: true
+  
+  # Chart configurations
+  distribution_plots:
+    bins: 50
+    show_stats: true
+    
+  correlation_matrix:
+    annot: true
+    fmt: ".2f"
+    cmap: "coolwarm"
+    
+  heatmaps:
+    annot: true
+    fmt: ".2%"
+    cmap: "RdYlGn_r"
+    
+  temporal_plots:
+    marker_size: 8
+    line_width: 2
+    show_average: true
+
+# Preprocessing Configuration
+preprocessing:
+  # Numerical features
+  numerical:
+    imputation_strategy: "median"
+    scaling_method: "standard"
+    
+  # Categorical features
+  categorical:
+    imputation_strategy: "constant"
+    imputation_value: "missing"
+    encoding_method: "onehot"
+    handle_unknown: "ignore"
+    
+  # Feature selection
+  feature_selection:
+    variance_threshold: 0.01
+    correlation_threshold: 0.95
+    importance_threshold: 0.01
+
+# Pipeline Configuration
+pipeline:
+  # Execution order
+  steps:
+    - "data_processing"
+    - "exploratory_analysis"
+    - "hypothesis_testing"
+    - "feature_engineering"
+    - "model_training"
+    - "model_evaluation"
+    - "risk_pricing"
+    - "visualization"
+    - "reporting"
+  
+  # Logging
+  logging:
+    level: "INFO"
+    file: "pipeline.log"
+    console_output: true
+    
+  # Monitoring
+  monitoring:
+    track_metrics: true
+    alert_thresholds:
+      data_quality: 0.95
+      model_performance: 0.70
+      processing_time: 3600  # seconds
+    
+  # Version control
+  version_control:
+    use_dvc: true
+    remote_storage: "./dvc_storage"
+    push_on_success: true
+
+# Deployment Configuration
+deployment:
+  # Model serving
+  model_serving:
+    framework: "flask"
+    port: 5000
+    host: "0.0.0.0"
+    
+  # API endpoints
+  api_endpoints:
+    predict_risk: "/api/v1/predict/risk"
+    calculate_premium: "/api/v1/calculate/premium"
+    get_insights: "/api/v1/insights"
+    
+  # Monitoring
+  monitoring:
+    enable_prometheus: true
+    metrics_port: 9090
+    health_check: "/health"
+    
+  # Scaling
+  scaling:
+    min_replicas: 2
+    max_replicas: 10
+    target_cpu_utilization: 70
+
+# Environment Configuration
+environment:
+  # Development
+  development:
+    debug: true
+    log_level: "DEBUG"
+    cache_enabled: false
+    
+  # Testing
+  testing:
+    debug: false
+    log_level: "INFO"
+    use_sample_data: true
+    sample_size: 1000
+    
+  # Production
+  production:
+    debug: false
+    log_level: "WARNING"
+    cache_enabled: true
+    model_refresh_hours: 24
+
+# External Services Configuration
+external_services:
+  # Database
+  database:
+    type: "postgresql"
+    host: "localhost"
+    port: 5432
+    name: "insurance_analytics"
+    user: "${DB_USER}"
+    password: "${DB_PASSWORD}"
+    
+  # Cloud Storage
+  cloud_storage:
+    provider: "aws"  # or "azure", "gcp"
+    bucket: "insurance-analytics-data"
+    region: "eu-west-1"
+    
+  # Email Notifications
+  email:
+    enabled: false
+    smtp_server: "smtp.gmail.com"
+    smtp_port: 587
+    sender: "analytics@alphacare.co.za"
+    
+  # API Keys (store in environment variables)
+  api_keys:
+    openweathermap: "${WEATHER_API_KEY}"
+    geocoding: "${GEOCODING_API_KEY}"
+
+# Report Configuration
+reports:
+  # Interim Report
+  interim:
+    template: "reports/templates/interim_template.md"
+    output: "reports/interim_report.md"
+    include_sections:
+      - "executive_summary"
+      - "data_overview"
+      - "eda_findings"
+      - "next_steps"
+      
+  # Final Report
+  final:
+    template: "reports/templates/final_template.md"
+    output: "reports/final_report.md"
+    format: "medium"  # or "academic", "executive"
+    include_sections:
+      - "executive_summary"
+      - "methodology"
+      - "key_findings"
+      - "business_recommendations"
+      - "implementation_roadmap"
+      - "limitations"
+      - "appendix"
+      
+  # Visualization reports
+  visualizations:
+    generate_pdf: true
+    include_plots: true
+    plot_quality: "high"
+
+# Security Configuration
+security:
+  # Data protection
+  data_protection:
+    encrypt_sensitive_data: true
+    anonymize_personal_info: true
+    retention_period_days: 365
+    
+  # Access control
+  access_control:
+    require_authentication: true
+    role_based_access: true
+    allowed_roles: ["admin", "analyst", "viewer"]
+    
+  # Audit logging
+  audit:
+    enabled: true
+    log_data_access: true
+    log_model_usage: true
+
+# Metadata
+metadata:
+  project_name: "Insurance Risk Analytics"
+  version: "1.0.0"
+  description: "End-to-end insurance risk analytics and predictive modeling system"
+  author: "AlphaCare Insurance Solutions Analytics Team"
+  created_date: "2025-12-03"
+  last_updated: "${CURRENT_DATE}"
+  license: "MIT"
+  
+  # Contact information
+  contact:
+    email: "analytics@alphacare.co.za"
+    website: "https://alphacare.co.za"
+    support_channel: "GitHub Issues"
+    
+  # Dependencies
+  dependencies:
+    python: ">=3.8"
+    core_libraries:
+      - "numpy>=1.24.0"
+      - "pandas>=2.0.0"
+      - "scikit-learn>=1.3.0"
+    ml_libraries:
+      - "xgboost>=1.7.0"
+      - "lightgbm>=4.0.0"
+    visualization:
+      - "matplotlib>=3.7.0"
+      - "seaborn>=0.12.0"
+      - "plotly>=5.17.0"
